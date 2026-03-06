@@ -1,0 +1,43 @@
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
+
+export type ApiClientConfig = {
+  baseURL: string;
+  timeout?: number;
+  getAccessToken?: () => string | null;
+};
+
+/**
+ * Фабрика Axios-инстансов для разных микросервисов.
+ * Каждый сервис может иметь свой baseURL и опционально свой токен.
+ */
+export function createApiClient(config: ApiClientConfig): AxiosInstance {
+  const { baseURL, timeout = 10000, getAccessToken } = config;
+
+  const client = axios.create({
+    baseURL,
+    timeout,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  client.interceptors.request.use((req: InternalAxiosRequestConfig) => {
+    const token = getAccessToken?.();
+    if (token) {
+      req.headers.Authorization = `Bearer ${token}`;
+    }
+    return req;
+  });
+
+  client.interceptors.response.use(
+    (res) => res,
+    (err) => {
+      if (err.response?.status === 401) {
+        // Можно диспатчить logout или редирект на логин
+      }
+      return Promise.reject(err);
+    },
+  );
+
+  return client;
+}
