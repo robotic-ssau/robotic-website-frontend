@@ -1,13 +1,34 @@
 import type { ReactNode } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Layout, Typography, Flex } from 'antd';
+import { ThemeToggle, useTheme } from '@/features/theme';
+import { THEME_DARK } from '@/shared/lib/theme';
+
+const { Header, Content } = Layout;
+const { Text } = Typography;
 
 interface MainLayoutProps {
   children?: ReactNode;
 }
 
+const headerStyleLight = {
+  background: '#fff',
+  color: 'rgba(0, 0, 0, 0.88)',
+  borderBottom: '1px solid rgba(5, 5, 5, 0.06)',
+};
+const headerStyleDark = {
+  background: '#141414',
+  color: 'rgba(255, 255, 255, 0.85)',
+  borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+};
+
 export function MainLayout({ children }: MainLayoutProps) {
   const location = useLocation();
+  const { theme } = useTheme();
+  const isDark = theme === THEME_DARK;
+  const headerStyle = isDark ? headerStyleDark : headerStyleLight;
+  const navLinkStyle = { color: 'inherit' };
 
   useEffect(() => {
     // #region agent log
@@ -33,26 +54,30 @@ export function MainLayout({ children }: MainLayoutProps) {
   }, [location.pathname]);
 
   return (
-    <div>
-      <header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '12px 24px',
-          borderBottom: '1px solid #e5e5e5',
-        }}
-      >
-        <span style={{ fontWeight: 600 }}>Портал клуба</span>
-        <nav style={{ display: 'flex', gap: 16 }}>
-          <Link to="/">Главная</Link>
-          <Link to="/profile">Профиль</Link>
-          <Link to="/lab">Лаборатория</Link>
-          <Link to="/admin">Админка</Link>
-        </nav>
-      </header>
-
-      <main style={{ padding: '24px' }}>{children ?? <Outlet />}</main>
-    </div>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Header style={headerStyle}>
+        <Flex align="center" justify="space-between" style={{ height: '100%' }}>
+          <Text strong style={{ color: 'inherit', fontSize: 18 }}>
+            Портал клуба
+          </Text>
+          <Flex align="center" gap="middle">
+            <Link to="/" style={navLinkStyle}>
+              Главная
+            </Link>
+            <Link to="/profile" style={navLinkStyle}>
+              Профиль
+            </Link>
+            <Link to="/lab" style={navLinkStyle}>
+              Лаборатория
+            </Link>
+            <Link to="/admin" style={navLinkStyle}>
+              Админка
+            </Link>
+            <ThemeToggle />
+          </Flex>
+        </Flex>
+      </Header>
+      <Content style={{ padding: 24 }}>{children ?? <Outlet />}</Content>
+    </Layout>
   );
 }

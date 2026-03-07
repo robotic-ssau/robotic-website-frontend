@@ -6,6 +6,19 @@
     <title>Портал клуба</title>
   </head>
   <body>
+    <script>
+      (function () {
+        var key = 'app-theme';
+        var theme = 'light';
+        try {
+          var stored = localStorage.getItem(key);
+          if (stored === 'dark' || stored === 'light') theme = stored;
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
+        document.body.style.backgroundColor = theme === 'dark' ? '#141414' : '#ffffff';
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/app/index.tsx"></script>
   </body>
