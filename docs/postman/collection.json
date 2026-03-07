@@ -1,0 +1,388 @@
+{
+  "info": {
+    "_postman_id": "78584357-1935-43fb-a965-b7e41c74f471",
+    "name": "Robotic",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37402200"
+  },
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "get users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "users"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/users/d1aef7b1-89bd-4752-aa1f-162ec0c60c8c",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "users", "d1aef7b1-89bd-4752-aa1f-162ec0c60c8c"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/users/id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "users", "id"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"profile\": {\n        \"id\": \"6b42b1de-2d71-447e-9252-0ab019e8ac97\",\n        \"user_id\": \"d1aef7b1-89bd-4752-aa1f-162ec0c60c8c\",\n        \"first_name\": \"Дмитрий\",\n        \"second_name\": \"Иванов\",\n        \"middle_name\": \"Иванович\",\n        \"phone\": \"+79001234567\",\n        \"email\": \"admin@robotic.ru\",\n        \"group\": \"Администрация\",\n        \"vk_id\": \"admin_vk\",\n        \"telegram_id\": \"@admin_tg\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/users/d1aef7b1-89bd-4752-aa1f-162ec0c60c8c",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "users", "d1aef7b1-89bd-4752-aa1f-162ec0c60c8c"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"d1aef7b1-89bd-4752-aa1f-162ec0c60c8c\",\n    \"username\": \"admin-new\",\n    \"password\": \"admin123\",\n    \"active\": true,\n    \"profile\": {\n        \"id\": \"6b42b1de-2d71-447e-9252-0ab019e8ac97\",\n        \"user_id\": \"d1aef7b1-89bd-4752-aa1f-162ec0c60c8c\",\n        \"first_name\": \"Иван\",\n        \"second_name\": \"Иванов\",\n        \"middle_name\": \"Иванович\",\n        \"phone\": \"+79001234567\",\n        \"email\": \"admin@robotic.ru\",\n        \"group\": \"Администрация\",\n        \"vk_id\": \"admin_vk\",\n        \"telegram_id\": \"@admin_tg\"\n    },\n    \"roles\": [\n        {\n            \"id\": \"756b5ac1-36bd-4462-8802-4ccf6bc12ee1\",\n            \"name\": \"ADMIN\"\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/users",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "users"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "auth", "login"],
+              "query": [
+                {
+                  "key": null,
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/auth/logout",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "auth", "logout"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "auth/me",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/auth/me",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "auth", "me"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Post",
+      "item": [
+        {
+          "name": "get posts",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/posts",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "posts"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/posts/fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "posts", "fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n    \"status\": \"PUBLISHED\",\n    \"type\": \"ARTICLE\",\n    \"publication_date\": \"2024-03-01T10:00:00.000Z\",\n    \"text\": {\n        \"id\": \"69dbe728-d792-4fd8-8fd5-45666ac1275a\",\n        \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n        \"content\": \"Приглашаем всех студентов на открытое занятие по робототехнике! Мы расскажем о последних достижениях в области искусственного интеллекта и покажем наших роботов в действии.\"\n    },\n    \"tags\": [\n        {\n            \"id\": \"5867dead-d4d2-48ac-85e7-d2a2811bcca7\",\n            \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n            \"tag\": \"робототехника\"\n        },\n        {\n            \"id\": \"b878d44f-d42a-49e1-a974-3df37f66620f\",\n            \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n            \"tag\": \"обучение\"\n        },\n        {\n            \"id\": \"05c65655-a0ec-4006-81d7-c3ec2bd06b9a\",\n            \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n            \"tag\": \"ИИ\"\n        }\n    ],\n    \"photos\": [\n        {\n            \"id\": \"81e3c00d-3b39-489b-8c54-f2e1387b3c34\",\n            \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n            \"link\": \"https://picsum.photos/800/600?random=1\"\n        }\n    ],\n    \"videos\": [],\n    \"locations\": [\n        {\n            \"id\": \"d3398a71-0b5a-4a37-9586-dbbda8700ee9\",\n            \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n            \"publication_date\": \"2024-03-01T10:00:00.000Z\",\n            \"status\": \"PUBLISHED\",\n            \"type\": \"WEBSITE\",\n            \"external_id\": \"\"\n        },\n        {\n            \"id\": \"f50cad97-0ca3-477e-bd61-bb302722bc7c\",\n            \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n            \"publication_date\": \"2024-03-01T10:00:00.000Z\",\n            \"status\": \"PUBLISHED\",\n            \"type\": \"VK\",\n            \"external_id\": \"vk_post_123\"\n        }\n    ],\n    \"survey\": {\n        \"id\": \"d64a428b-fa1f-4624-8eea-28d0675e382d\",\n        \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n        \"type\": \"SINGLE\",\n        \"answers\": [\n            {\n                \"id\": \"d0ed1513-2412-49db-af33-208ef9de79eb\",\n                \"survey_id\": \"d64a428b-fa1f-4624-8eea-28d0675e382d\",\n                \"text\": \"Да, обязательно приду!\",\n                \"index\": 0\n            },\n            {\n                \"id\": \"0c180631-8898-49b7-9d9e-7cdd120756d6\",\n                \"survey_id\": \"d64a428b-fa1f-4624-8eea-28d0675e382d\",\n                \"text\": \"Возможно, если будет время\",\n                \"index\": 1\n            },\n            {\n                \"id\": \"b46ab535-c07d-4be1-94e2-7a9e4687c405\",\n                \"survey_id\": \"d64a428b-fa1f-4624-8eea-28d0675e382d\",\n                \"text\": \"Нет, не смогу\",\n                \"index\": 2\n            }\n        ]\n    },\n    \"authors\": [\n        {\n            \"id\": \"e712692b-626e-42c0-a99b-e2c5cd515bc6\",\n            \"user_id\": \"d867f236-f5d9-4a2a-aae2-0ac9c056feb4\",\n            \"post_id\": \"fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5\",\n            \"type\": \"TEXT\",\n            \"user\": {\n                \"id\": \"d867f236-f5d9-4a2a-aae2-0ac9c056feb4\",\n                \"username\": \"smm_manager\",\n                \"password\": \"smm123\",\n                \"active\": true\n            },\n            \"profile\": {\n                \"id\": \"cb53bdb5-9c87-428f-88fb-c842b34f5ae6\",\n                \"user_id\": \"d867f236-f5d9-4a2a-aae2-0ac9c056feb4\",\n                \"first_name\": \"Мария\",\n                \"second_name\": \"Петрова\",\n                \"middle_name\": \"Сергеевна\",\n                \"phone\": \"+79009876543\",\n                \"email\": \"smm@robotic.ru\",\n                \"group\": \"Маркетинг\",\n                \"vk_id\": \"smm_vk\",\n                \"telegram_id\": \"@smm_tg\"\n            }\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/posts",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "posts"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Приглашаем всех студентов на открытое занятие по робототехнике! Мы расскажем о последних достижениях в области искусственного интеллекта и покажем наших роботов в действии!!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3001/api/posts/fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "posts", "fc3ca450-0f95-4e67-9d95-fa0d0c0c8cf5"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "fake-jwt-d1aef7b1-89bd-4752-aa1f-162ec0c60c8c-1772862028284",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3001/api/posts/id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3001",
+              "path": ["api", "posts", "id"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

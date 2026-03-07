@@ -97,6 +97,14 @@ module.exports = {
         ],
       },
     ],
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'TSEnumDeclaration:not([const=true])',
+        message:
+          'Use object with "as const" or "const enum" instead of regular enum. Regular enums emit runtime code and can cause issues with tree-shaking.',
+      },
+    ],
   },
   overrides: [],
   ignorePatterns: [
@@ -109,5 +117,7 @@ module.exports = {
     '*.config.cjs',
     '*.config.mjs',
     'vite.config.ts',
+    'examples',
+    'server-mock'
   ],
 };
