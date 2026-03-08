@@ -83,6 +83,14 @@ router.post('/logout', (req: Request, res: Response<LogoutResponseDTO>) => {
 
 // GET /api/auth/me (получить текущего пользователя)
 router.get('/me', async (req: Request, res: Response<GetCurrentUserResponseDTO | ApiErrorDTO>) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Missing or invalid Authorization header',
+    });
+  }
+
   // Здесь можно извлечь user_id из токена, но для простоты возвращаем моковые данные
   const users = await getAllByField('users', 'active', true);
 

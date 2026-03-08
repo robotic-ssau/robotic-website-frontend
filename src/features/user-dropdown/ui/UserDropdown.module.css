@@ -1,0 +1,17 @@
+.menuUserBlock {
+  padding: 4px 0;
+  min-width: 180px;
+}
+
+.menuUserName {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.menuUserMeta {
+  font-size: 12px;
+}
+
+.avatar {
+  cursor: pointer;
+}
