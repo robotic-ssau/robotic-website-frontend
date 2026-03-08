@@ -1,3 +1,4 @@
+import { mkdirSync } from 'fs';
 import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 import { join, dirname } from 'path';
@@ -6,6 +7,7 @@ import type { Database } from '../types.js';
 
 const currentDirname = dirname(fileURLToPath(import.meta.url));
 const dbPath = join(currentDirname, '../../data/db.json');
+const dataDir = dirname(dbPath);
 
 // Инициализируем базу данных с пустой структурой
 const defaultData: Database = {
@@ -27,8 +29,9 @@ const defaultData: Database = {
 const adapter = new JSONFile<Database>(dbPath);
 const db = new Low<Database>(adapter, defaultData);
 
-// Инициализация БД
+// Инициализация БД (создаёт директорию data при необходимости, например в CI)
 export async function initDB() {
+  mkdirSync(dataDir, { recursive: true });
   await db.read();
   if (!db.data) {
     db.data = defaultData;
