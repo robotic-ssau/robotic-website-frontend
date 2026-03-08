@@ -39,6 +39,6 @@ jobs:
       - name: Установка браузеров Playwright
         run: npx playwright install --with-deps
 
-      # Шаг 7: Запуск E2E тестов
-      - name: Запуск E2E тестов
-        run: npm run test:e2e
+      # Шаг 7: Запуск тестов
+      - name: Запуск тестов
+        run: npm run test
