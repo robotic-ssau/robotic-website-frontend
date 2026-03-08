@@ -17,6 +17,7 @@
     "husky:install": "husky",
     "tsc": "tsc",
     "typecheck": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "test:e2e": "playwright test"
   },
   "dependencies": {
