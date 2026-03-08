@@ -35,10 +35,18 @@ jobs:
       - name: Проверка типов
         run: npm run type-check
 
-      # Шаг 6: Установка браузеров Playwright для E2E
+      # Шаг 6: Установка зависимостей мок-сервера (нужны для E2E)
+      - name: Установка зависимостей server-mock
+        run: cd server-mock && npm ci
+
+      # Шаг 6: Заполнить БД тестовыми данными
+      - name: Наполнение server-mock данными
+        run: npm run seed
+
+      # Шаг 8: Установка браузеров Playwright для E2E
       - name: Установка браузеров Playwright
         run: npx playwright install --with-deps
 
-      # Шаг 7: Запуск тестов
+      # Шаг 9: Запуск тестов
       - name: Запуск тестов
         run: npm run test
