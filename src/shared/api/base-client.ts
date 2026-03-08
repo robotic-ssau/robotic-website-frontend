@@ -33,7 +33,17 @@ export function createApiClient(config: ApiClientConfig): AxiosInstance {
     (res) => res,
     (err) => {
       if (err.response?.status === 401) {
-        // Можно диспатчить logout или редирект на логин
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('access_token');
+        }
+
+        const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
+        const event = new CustomEvent('auth:unauthorized', {
+          detail: { pathname },
+        });
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(event);
+        }
       }
       return Promise.reject(err);
     },

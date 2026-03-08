@@ -4,12 +4,13 @@ import { MainLayout } from '@/app/layouts/main-layout';
 import App from '@/app/App';
 import { ProtectedRoute } from '@/features/access';
 import { ROLES, type Role } from '@/entities/user';
-import { LoginPage } from '@/pages/login';
+import { LoginPage } from '@/pages/login-page';
 import { ProfilePage } from '@/pages/profile';
 import { AdminPage } from '@/pages/admin';
 import { LabPage } from '@/pages/lab';
 import { ForbiddenPage } from '@/pages/forbidden';
 import { NotFoundPage } from '@/pages/not-found';
+import { AuthInitWrapper } from './auth-init-wrapper';
 
 type AppRouteConfig = {
   path?: string;
@@ -35,7 +36,7 @@ const routesConfig: AppRouteConfig[] = [
       {
         path: 'profile',
         element: <ProfilePage />,
-        requiredRoles: [ROLES.USER],
+        requiredRoles: [ROLES.USER, ROLES.ADMIN, ROLES.OWNER, ROLES.COUNCIL],
       },
       {
         path: 'admin',
@@ -84,7 +85,12 @@ function wrapWithProtectedRoute(routes: AppRouteConfig[]): RouteObject[] {
   });
 }
 
-const router = createBrowserRouter(wrapWithProtectedRoute(routesConfig));
+const router = createBrowserRouter([
+  {
+    element: <AuthInitWrapper />,
+    children: wrapWithProtectedRoute(routesConfig),
+  },
+]);
 
 export function AppRouter() {
   return <RouterProvider router={router} />;

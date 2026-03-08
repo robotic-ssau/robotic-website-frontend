@@ -1,4 +1,8 @@
 /* eslint-disable import/no-commonjs */
+/**
+ * ESLint + FSD boundaries.
+ * Архитектура: docs/FSD_ARCHITECTURE.md, .cursorrules
+ */
 module.exports = {
   root: true,
   env: {
@@ -25,14 +29,12 @@ module.exports = {
   ],
   settings: {
     'boundaries/elements': [
-      { type: 'app', pattern: 'src/app/*' },
-      { type: 'ui', pattern: 'src/ui/*' },
+      { type: 'app', pattern: 'src/app' },
       { type: 'pages', pattern: 'src/pages/*' },
       { type: 'widgets', pattern: 'src/widgets/*' },
       { type: 'features', pattern: 'src/features/*' },
       { type: 'entities', pattern: 'src/entities/*' },
       { type: 'shared', pattern: 'src/shared/*' },
-      { type: 'lib', pattern: 'src/lib/*' },
     ],
   },
   rules: {
@@ -42,14 +44,12 @@ module.exports = {
       {
         default: 'disallow',
         rules: [
-          { from: 'lib', disallow: ['*'] },
-          { from: 'shared', allow: ['lib'] },
-          { from: 'entities', allow: ['shared', 'lib'] },
-          { from: 'features', allow: ['entities', 'shared', 'lib'] },
-          { from: 'widgets', allow: ['features', 'entities', 'shared', 'lib'] },
-          { from: 'pages', allow: ['widgets', 'features', 'entities', 'shared', 'lib'] },
-          { from: 'ui', allow: ['pages', 'widgets', 'features', 'entities', 'shared', 'lib'] },
-          { from: 'app', allow: ['ui', 'pages', 'widgets', 'features', 'entities', 'shared', 'lib'] },
+          { from: 'shared', allow: ['shared'] },
+          { from: 'entities', allow: ['shared'] },
+          { from: 'features', allow: ['entities', 'shared'] },
+          { from: 'widgets', allow: ['features', 'entities', 'shared'] },
+          { from: 'pages', allow: ['widgets', 'features', 'entities', 'shared'] },
+          { from: 'app', allow: ['pages', 'widgets', 'features', 'entities', 'shared'] },
         ],
       },
     ],
@@ -59,15 +59,15 @@ module.exports = {
         default: 'disallow',
         rules: [
           {
-            target: ['app', 'pages', 'widgets', 'features', 'entities', 'ui'],
+            target: ['app', 'pages', 'widgets', 'features', 'entities'],
             allow: ['index.{ts,tsx}', 'index.{js,jsx}'],
             message:
-              'Import only from barrel (index) of the slice. Use e.g. @/features/access or @/entities/user.',
+              'Импортируйте слайс только из barrel (index). Например: @/features/access, @/entities/user.',
           },
           {
-            target: ['shared', 'lib'],
+            target: ['shared'],
             allow: '*',
-            message: 'Import from shared/lib public API.',
+            message: 'Импорт из shared — по публичному API модуля.',
           },
         ],
       },
@@ -88,11 +88,15 @@ module.exports = {
             group: [
               '**/features/*/*',
               '**/entities/*/*',
+              '**/widgets/*/*',
+              '**/pages/*/*',
               '@/features/*/*',
               '@/entities/*/*',
+              '@/widgets/*/*',
+              '@/pages/*/*',
             ],
             message:
-              'Import only from barrel (index) of features and entities. Use e.g. @/features/access or @/entities/user, not internal paths like .../model or .../ui.',
+              'Импортируйте только из barrel слайса (index). Например: @/entities/user, @/features/access — не внутренние пути .../model или .../ui.',
           },
         ],
       },
@@ -102,7 +106,7 @@ module.exports = {
       {
         selector: 'TSEnumDeclaration:not([const=true])',
         message:
-          'Use object with "as const" or "const enum" instead of regular enum. Regular enums emit runtime code and can cause issues with tree-shaking.',
+          'Используйте объект с "as const" вместо enum. Обычный enum порождает runtime-код и мешает tree-shaking.',
       },
     ],
   },
@@ -118,6 +122,6 @@ module.exports = {
     '*.config.mjs',
     'vite.config.ts',
     'examples',
-    'server-mock'
+    'server-mock',
   ],
 };
