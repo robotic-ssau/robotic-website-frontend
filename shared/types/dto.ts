@@ -353,13 +353,30 @@ export interface GetCurrentUserRequestDTO {
  */
 export interface GetCurrentUserResponseDTO extends UserWithProfileDTO {}
 
+// ==================== Pagination ====================
+
+/**
+ * Метаданные пагинации в ответах списков
+ */
+export interface PaginationMetaDTO {
+  /** Общее количество записей */
+  total: number;
+  /** Номер страницы (1-based) */
+  page: number;
+  /** Размер страницы */
+  pageSize: number;
+}
+
 // ==================== Users API ====================
 
 /**
  * Запрос списка пользователей
  */
 export interface GetUsersRequestDTO {
-  // В будущем можно добавить параметры фильтрации и пагинации
+  /** Номер страницы (по умолчанию 1) */
+  page?: number;
+  /** Размер страницы (по умолчанию 10, макс. 100) */
+  pageSize?: number;
 }
 
 /**
@@ -367,7 +384,9 @@ export interface GetUsersRequestDTO {
  */
 export interface GetUsersResponseDTO {
   /** Список пользователей */
-  users: UserWithProfileDTO[];
+  data: UserWithProfileDTO[];
+  /** Метаданные пагинации */
+  meta: PaginationMetaDTO;
 }
 
 /**
@@ -476,7 +495,10 @@ export interface DeleteUserResponseDTO {
  * Запрос списка постов
  */
 export interface GetPostsRequestDTO {
-  // В будущем можно добавить фильтры по статусу, типу и т.д.
+  /** Номер страницы (по умолчанию 1) */
+  page?: number;
+  /** Размер страницы (по умолчанию 10, макс. 100) */
+  pageSize?: number;
 }
 
 /**
@@ -484,7 +506,7 @@ export interface GetPostsRequestDTO {
  */
 export interface GetPostsResponseDTO {
   /** Список постов */
-  posts: Array<
+  data: Array<
     PostDTO & {
       /** Текст поста */
       text?: PostTextDTO;
@@ -494,6 +516,8 @@ export interface GetPostsResponseDTO {
       photos: PostPhotoDTO[];
     }
   >;
+  /** Метаданные пагинации */
+  meta: PaginationMetaDTO;
 }
 
 /**

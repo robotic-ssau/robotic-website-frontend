@@ -1,14 +1,15 @@
+import type { RoleTypeDTO } from '@shared-types';
 import type { LoginResponseDTO, UserWithProfileDTO, RoleDTO } from '../api/types';
 import { ROLES, type Role } from '../model/roles';
 import type { User } from '../model/types';
 
-const BACKEND_ROLE_TO_FRONTEND: Record<string, Role> = {
+const BACKEND_ROLE_TO_FRONTEND: Record<RoleTypeDTO, Role> = {
   ANONYMOUS: ROLES.GUEST,
   USER: ROLES.USER,
   ADMIN: ROLES.ADMIN,
   OWNER: ROLES.OWNER,
   COUNCIL: ROLES.COUNCIL,
-  SMM: ROLES.USER,
+  SMM: ROLES.SMM,
 };
 
 function mapRolesDtoToDomain(roles?: RoleDTO[]): Role[] {

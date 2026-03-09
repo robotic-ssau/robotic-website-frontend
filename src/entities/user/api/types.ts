@@ -4,4 +4,4 @@ export type {
   UserWithProfileDTO,
   GetCurrentUserResponseDTO,
   RoleDTO,
-} from '@shared-types/dto';
+} from '@shared-types';

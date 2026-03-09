@@ -1,9 +1,10 @@
 import type { ReactNode } from 'react';
 import { useAccess } from '../model/use-access';
+import { Role } from '@/entities/user';
 
 export interface AccessGuardProps {
   /** Роли, при наличии хотя бы одной — контент показывается */
-  roles: string[];
+  roles: Role[];
   /** Контент при наличии доступа */
   children: ReactNode;
   /** Опциональная заглушка при отсутствии доступа */
