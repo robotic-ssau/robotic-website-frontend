@@ -3,20 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Портал клуба</title>
+    <title>Robotic</title>
+    <link rel="icon" href="./public/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="./public/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./public/favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="./public/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="./public/favicon/site.webmanifest">
   </head>
   <body>
     <script>
       (function () {
         var key = 'app-theme';
-        var theme = 'light';
+        var theme = 'system';
         try {
           var stored = localStorage.getItem(key);
-          if (stored === 'dark' || stored === 'light') theme = stored;
+          if (stored === 'dark' || stored === 'light' || stored === 'system') theme = stored;
         } catch (e) {}
-        document.documentElement.setAttribute('data-theme', theme);
-        document.documentElement.style.colorScheme = theme === 'dark' ? 'dark' : 'light';
-        document.body.style.backgroundColor = theme === 'dark' ? '#141414' : '#ffffff';
+        var resolved = theme;
+        if (theme === 'system') {
+          var mql = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+          resolved = mql && mql.matches ? 'dark' : 'light';
+        }
+        document.documentElement.classList.add(resolved);
+        document.documentElement.style.colorScheme = resolved === 'dark' ? 'dark' : 'light';
+        document.body.style.backgroundColor = resolved === 'dark' ? '#141414' : '#ffffff';
       })();
     </script>
     <div id="root"></div>
