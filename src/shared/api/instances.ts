@@ -7,6 +7,7 @@ export const API_SERVICES = {
   FEED: 'feed',
   LAB: 'lab',
   SMM: 'smm',
+  POSTS: 'posts',
 } as const;
 
 export type ApiServiceKey = (typeof API_SERVICES)[keyof typeof API_SERVICES];
@@ -48,6 +49,11 @@ export const apiSmm = createApiClient({
   getAccessToken: getToken,
 });
 
+export const apiPosts = createApiClient({
+  baseURL: getBaseUrl(API_SERVICES.POSTS),
+  getAccessToken: getToken,
+});
+
 /** Маппинг ключ → инстанс для динамического выбора сервиса */
 export const apiByService: Record<ApiServiceKey, ReturnType<typeof createApiClient>> = {
   [API_SERVICES.AUTH]: apiAuth,
@@ -55,6 +61,7 @@ export const apiByService: Record<ApiServiceKey, ReturnType<typeof createApiClie
   [API_SERVICES.FEED]: apiFeed,
   [API_SERVICES.LAB]: apiLab,
   [API_SERVICES.SMM]: apiSmm,
+  [API_SERVICES.POSTS]: apiPosts,
 };
 
 /**

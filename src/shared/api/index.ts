@@ -1,4 +1,8 @@
-export { createApiClient } from './base-client';
+export {
+  createApiClient,
+  UNAUTHORIZED_EVENT_TYPE,
+  type UnauthorizedCustomEventType,
+} from './base-client';
 export type { ApiClientConfig } from './base-client';
 export {
   apiAuth,
