@@ -14,6 +14,7 @@ import type {
   ApiErrorDTO,
 } from '../types.js';
 import { authMiddleware } from '../middleware/auth.js';
+import { parsePageParams, paginate } from '../utils/pagination.js';
 
 const router = Router();
 
@@ -63,15 +64,19 @@ async function buildPostDetailed(post: PostDTO): Promise<PostDetailedDTO> {
   };
 }
 
-// GET /api/posts - получить список всех постов
+// GET /api/posts - получить список постов с пагинацией
 router.get('/', async (req: Request, res: Response<GetPostsResponseDTO | ApiErrorDTO>) => {
   try {
-    const posts = await getAll('posts');
+    const { page, pageSize } = parsePageParams(
+      req.query.page as string | undefined,
+      req.query.pageSize as string | undefined,
+    );
 
-    // Можно вернуть только основную информацию или полную
-    // Для списка вернем краткую версию с текстом и тегами
+    const allPosts = await getAll('posts');
+    const { data: postsPage, meta } = paginate(allPosts, page, pageSize);
+
     const postsWithBasicInfo = await Promise.all(
-      posts.map(async (post) => {
+      postsPage.map(async (post) => {
         const text = await getByField('post_texts', 'post_id', post.id);
         const tags = await getAllByField('post_tags', 'post_id', post.id);
         const photos = await getAllByField('post_photos', 'post_id', post.id);
@@ -85,7 +90,7 @@ router.get('/', async (req: Request, res: Response<GetPostsResponseDTO | ApiErro
       }),
     );
 
-    return res.json({ posts: postsWithBasicInfo });
+    return res.json({ data: postsWithBasicInfo, meta });
   } catch (error) {
     console.error('Get posts error:', error);
     return res.status(500).json({
