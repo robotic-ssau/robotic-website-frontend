@@ -1,9 +1,24 @@
 import { useEffect, useRef } from 'react';
 import { Outlet, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import { App } from 'antd';
 import { useUserStore, useAuthInit } from '@/entities/user';
-import { isProtectedPath } from '@/shared/config/routes';
 import { AppSkeleton } from '@/app/ui';
+import { UNAUTHORIZED_EVENT_TYPE, UnauthorizedCustomEventType } from '@/shared/api';
+import { ALL_ROUTES_META } from '@/pages/routes.ts';
+import { matchRouteMeta } from '@/shared/routing';
+
+/**
+ * Пути, требующие авторизации (защищённые маршруты).
+ * При добавлении новых защищённых страниц — дополнять массив.
+ */
+export const PROTECTED_ROUTES = ALL_ROUTES_META.filter((route) => route.requiredRoles);
+
+/**
+ * Проверяет, является ли путь защищённым (требующим авторизации).
+ */
+export function isProtectedPath(pathname: string): boolean {
+  return Boolean(matchRouteMeta(pathname, PROTECTED_ROUTES));
+}
 
 /**
  * Обёртка для инициализации авторизации и умного редиректа.
@@ -12,6 +27,7 @@ import { AppSkeleton } from '@/app/ui';
  * если не авторизован и путь публичный — показ сообщения об истечении сессии.
  */
 export function AuthInitWrapper() {
+  const { message } = App.useApp();
   useAuthInit();
 
   const isInit = useUserStore((s) => s.isInit);
@@ -22,7 +38,7 @@ export function AuthInitWrapper() {
 
   useEffect(() => {
     const handleUnauthorized = (event: Event) => {
-      const customEvent = event as CustomEvent<{ pathname: string }>;
+      const customEvent = event as CustomEvent<UnauthorizedCustomEventType>;
       const { pathname } = customEvent.detail;
       if (isProtectedPath(pathname)) {
         navigate('/login', { state: { from: { pathname } }, replace: true });
@@ -32,11 +48,11 @@ export function AuthInitWrapper() {
       }
     };
 
-    window.addEventListener('auth:unauthorized', handleUnauthorized);
+    window.addEventListener(UNAUTHORIZED_EVENT_TYPE, handleUnauthorized);
     return () => {
-      window.removeEventListener('auth:unauthorized', handleUnauthorized);
+      window.removeEventListener(UNAUTHORIZED_EVENT_TYPE, handleUnauthorized);
     };
-  }, [navigate]);
+  }, [navigate, message]);
 
   if (!isInit) {
     return <AppSkeleton />;

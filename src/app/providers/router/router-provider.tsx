@@ -1,66 +1,45 @@
-import type { ReactNode } from 'react';
-import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
-import { MainLayout } from '@/app/layouts/main-layout';
-import App from '@/app/App';
+import { createBrowserRouter, RouterProvider, type RouteObject, redirect } from 'react-router-dom';
+import { AuthLayout, MainLayout } from '@/app/layouts';
 import { ProtectedRoute } from '@/features/access';
-import { ROLES, type Role } from '@/entities/user';
-import { LoginPage } from '@/pages/login-page';
-import { ProfilePage } from '@/pages/profile';
-import { AdminPage } from '@/pages/admin';
-import { LabPage } from '@/pages/lab';
-import { ForbiddenPage } from '@/pages/forbidden';
-import { NotFoundPage } from '@/pages/not-found';
+import type { Role } from '@/entities/user';
+import type { AppRouteConfig } from '@/shared/routing/types';
+import { authLayoutRoutesMeta, mainLayoutRoutesMeta } from '@/pages/routes';
 import { AuthInitWrapper } from './auth-init-wrapper';
 
-type AppRouteConfig = {
-  path?: string;
-  index?: boolean;
-  element?: ReactNode;
-  children?: AppRouteConfig[];
-  requiredRoles?: Role[];
-};
+import { postsRouteMeta } from '@/pages/posts-page';
 
-const routesConfig: AppRouteConfig[] = [
+const mainChildren: AppRouteConfig<Role>[] = [
+  {
+    index: true,
+    loader: () => redirect(postsRouteMeta.path), // Дефолтный путь это страница с постами/новостями
+    element: null,
+  },
+  ...mainLayoutRoutesMeta.map<AppRouteConfig<Role>>((meta) => ({
+    path: meta.path.replace(/^\//, ''),
+    element: meta.element,
+    requiredRoles: meta.requiredRoles,
+  })),
+];
+
+const routesConfig: AppRouteConfig<Role>[] = [
   {
     path: '/login',
-    element: <LoginPage />,
+    element: <AuthLayout />,
+    children: [
+      {
+        index: true,
+        element: authLayoutRoutesMeta[0].element,
+      },
+    ],
   },
   {
     path: '/',
     element: <MainLayout />,
-    children: [
-      {
-        index: true,
-        element: <App />,
-      },
-      {
-        path: 'profile',
-        element: <ProfilePage />,
-        requiredRoles: [ROLES.USER, ROLES.ADMIN, ROLES.OWNER, ROLES.COUNCIL],
-      },
-      {
-        path: 'admin',
-        element: <AdminPage />,
-        requiredRoles: [ROLES.ADMIN, ROLES.OWNER],
-      },
-      {
-        path: 'lab',
-        element: <LabPage />,
-        requiredRoles: [ROLES.COUNCIL, ROLES.ADMIN],
-      },
-      {
-        path: '403',
-        element: <ForbiddenPage />,
-      },
-      {
-        path: '*',
-        element: <NotFoundPage />,
-      },
-    ],
+    children: mainChildren,
   },
 ];
 
-function wrapWithProtectedRoute(routes: AppRouteConfig[]): RouteObject[] {
+function wrapWithProtectedRoute(routes: AppRouteConfig<Role>[]): RouteObject[] {
   return routes.map((route) => {
     const { requiredRoles, element } = route;
 
@@ -72,9 +51,8 @@ function wrapWithProtectedRoute(routes: AppRouteConfig[]): RouteObject[] {
       );
 
     const routeObject: RouteObject = {
-      path: route.path,
-      index: route.index,
       element: wrappedElement,
+      ...route,
     };
 
     if (route.children) {
