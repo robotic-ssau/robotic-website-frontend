@@ -18,9 +18,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@shared-types/*": ["shared/types"]
+      "@shared-types": ["shared/types"],
+      "@assets/*": ["public/assets/*"]
     }
   },
-  "include": ["src", "shared"],
+  "include": ["src", "shared", "vite-env.d.ts"],
   "exclude": ["server-mock"]
 }

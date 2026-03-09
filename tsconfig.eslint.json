@@ -6,6 +6,7 @@
     "*.config.js",
     "*.config.ts",
     "*.cjs",
-    "shared/**/*.ts"
+    "shared/**/*.ts",
+    "vite-env.d.ts"
   ]
 }
