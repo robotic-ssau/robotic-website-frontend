@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { AccessGuard } from '@/features/access';
 import { ROLES } from '@/entities/user';
 
@@ -5,6 +6,9 @@ function App() {
   return (
     <div>
       <h1>Портал клуба</h1>
+      <p>
+        <Link to="/posts">Посты</Link>
+      </p>
       <AccessGuard roles={[ROLES.USER]}>
         <p>Доступно только пользователям с ролью User и выше.</p>
       </AccessGuard>

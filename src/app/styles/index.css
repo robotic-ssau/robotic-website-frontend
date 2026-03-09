@@ -25,4 +25,7 @@ body {
   min-height: 100vh;
 }
 
-@import "antd";
+:root {
+  --color-toggle-light: #f3ea62;
+  --color-toggle-dark: #bfbfbf;
+}

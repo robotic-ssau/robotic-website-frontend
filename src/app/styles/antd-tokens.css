@@ -20,6 +20,7 @@
   --ant-color-bg-elevated: #ffffff;
   --ant-color-border: #d9d9d9;
   --ant-color-border-secondary: rgba(5, 5, 5, 0.06);
+  --ant-color-fill-tertiary: rgba(0, 0, 0, 0.04);
 
   --app-primary: var(--ant-primary-color);
   --app-error: var(--ant-color-error);
@@ -33,12 +34,13 @@
   --app-header-border: var(--ant-color-border-secondary);
 }
 
-[data-theme='dark'] {
+:root.dark {
   --ant-color-text: rgba(255, 255, 255, 0.85);
   --ant-color-text-secondary: rgba(255, 255, 255, 0.65);
   --ant-color-bg-container: #141414;
   --ant-color-bg-elevated: #1f1f1f;
   --ant-color-border-secondary: rgba(255, 255, 255, 0.06);
+  --ant-color-fill-tertiary: rgba(255, 255, 255, 0.06);
 
   --app-color-text: var(--ant-color-text);
   --app-color-text-secondary: var(--ant-color-text-secondary);
@@ -48,3 +50,4 @@
   --app-header-color: rgba(255, 255, 255, 0.85);
   --app-header-border: var(--ant-color-border-secondary);
 }
+

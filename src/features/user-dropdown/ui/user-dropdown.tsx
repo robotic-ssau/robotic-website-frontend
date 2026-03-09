@@ -3,6 +3,7 @@ import { Avatar, Dropdown, Typography } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/entities/user';
+import { defaultAuthRoutesConfig } from '@/shared/routing/auth-routes';
 import { useLogoutMutation } from '../model/use-logout-mutation';
 import styles from './UserDropdown.module.css';
 
@@ -12,10 +13,9 @@ export function UserDropdown() {
   const user = useUserStore((s) => s.user);
   const { mutate: logout, isPending } = useLogoutMutation();
   const navigate = useNavigate();
+  const { profilePath } = defaultAuthRoutesConfig;
 
   if (!user) return null;
-
-  const roleLabel = user.roles?.length ? user.roles[0] : '';
 
   const menuItems: MenuProps['items'] = [
     {
@@ -27,12 +27,11 @@ export function UserDropdown() {
           </Text>
           <Text type="secondary" className={styles.menuUserMeta}>
             {user.email}
-            {roleLabel ? ` · ${roleLabel}` : ''}
           </Text>
         </div>
       ),
       icon: <UserOutlined />,
-      onClick: () => navigate('/profile'),
+      onClick: () => navigate(profilePath),
     },
     { type: 'divider' },
     {
