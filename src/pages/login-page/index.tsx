@@ -1,11 +1,10 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { Card, Layout, Typography } from 'antd';
-import { useUserStore } from '@/entities/user';
+import { Card, Typography } from 'antd';
+import type { AppRouteMeta } from '@/shared/routing/types';
+import { useUserStore, type Role } from '@/entities/user';
 import { LoginForm } from '@/features/auth-by-username';
-import { ThemeToggle } from '@/features/theme';
 import styles from './LoginPage.module.css';
 
-const { Content } = Layout;
 const { Title } = Typography;
 
 export function LoginPage() {
@@ -18,20 +17,24 @@ export function LoginPage() {
   }
 
   return (
-    <Layout className={styles.layout}>
-      <Content className={styles.content}>
-        <div className={styles.themeToggleWrap}>
-          <ThemeToggle />
-        </div>
-        <Card className={styles.card}>
-          <Title level={2} className={styles.title}>
-            Вход
-          </Title>
-          <LoginForm />
-        </Card>
-      </Content>
-    </Layout>
+    <div className={styles.content}>
+      <Card className={styles.card}>
+        <Title level={2} className={styles.title}>
+          Вход
+        </Title>
+        <LoginForm />
+      </Card>
+    </div>
   );
 }
 
 export default LoginPage;
+
+export const loginRouteMeta: AppRouteMeta<Role> = {
+  path: '/login',
+  key: 'login',
+  title: 'Вход',
+  requiredRoles: undefined,
+  showInMainNav: false,
+  element: <LoginPage />,
+};
