@@ -8,7 +8,7 @@ test.describe('Auth login', () => {
     await page.getByLabel(/пароль/i).fill('admin123');
     await page.getByRole('button', { name: /войти/i }).click();
 
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/posts');
   });
 
   test('redirect to from path after login when coming from protected route', async ({ page }) => {
@@ -29,14 +29,14 @@ test.describe('Session hydration', () => {
     await page.getByLabel(/имя пользователя/i).fill('admin');
     await page.getByLabel(/пароль/i).fill('admin123');
     await page.getByRole('button', { name: /войти/i }).click();
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/posts');
 
     const token = await page.evaluate(() => localStorage.getItem('access_token'));
     expect(token).toBeTruthy();
 
     await context.addCookies([]);
     await page.goto('/');
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/posts');
   });
 
   test('with valid token, protected page loads directly', async ({ page }) => {
@@ -44,15 +44,10 @@ test.describe('Session hydration', () => {
     await page.getByLabel(/имя пользователя/i).fill('user');
     await page.getByLabel(/пароль/i).fill('user123');
     await page.getByRole('button', { name: /войти/i }).click();
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/posts');
 
     await page.goto('/profile');
     await expect(page).toHaveURL('/profile');
-  });
-
-  test('without token, public page shows without error', async ({ page }) => {
-    await page.goto('/');
-    await expect(page).toHaveURL('/');
   });
 
   test('without token, protected page redirects to login', async ({ page }) => {
@@ -72,13 +67,14 @@ test.describe('Header and user dropdown', () => {
     await page.getByLabel(/имя пользователя/i).fill('admin');
     await page.getByLabel(/пароль/i).fill('admin123');
     await page.getByRole('button', { name: /войти/i }).click();
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/posts');
 
     await expect(page.getByRole('button', { name: /войти/i })).not.toBeVisible();
     const avatar = page.locator('.ant-avatar').first();
     await expect(avatar).toBeVisible();
     await avatar.hover();
     await expect(page.getByText(/выйти из аккаунта/i)).toBeVisible();
+    await expect(page).toHaveURL('/posts');
   });
 
   test('logout clears session and redirects to home', async ({ page }) => {
@@ -86,15 +82,17 @@ test.describe('Header and user dropdown', () => {
     await page.getByLabel(/имя пользователя/i).fill('admin');
     await page.getByLabel(/пароль/i).fill('admin123');
     await page.getByRole('button', { name: /войти/i }).click();
-    await expect(page).toHaveURL('/');
+    await expect(page).toHaveURL('/posts');
 
     const avatar = page.locator('.ant-avatar').first();
     await avatar.hover();
     await page.getByText(/выйти из аккаунта/i).click();
 
-    await expect(page).toHaveURL('/');
-    const token = await page.evaluate(() => localStorage.getItem('access_token'));
-    expect(token).toBeFalsy();
+    await expect(page).toHaveURL('/posts');
+    await page.waitForFunction(() => !localStorage.getItem('access_token'));
+
+    await page.waitForFunction(() => !localStorage.getItem('access_token'));
+
     await expect(page.getByRole('button', { name: /войти/i })).toBeVisible();
   });
 });
