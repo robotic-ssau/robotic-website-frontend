@@ -1,0 +1,52 @@
+name: CI
+
+# Триггер: запуск на открытие/обновление Pull Request в ветки main и develop
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Клонирование репозитория
+      - name: Checkout репозитория
+        uses: actions/checkout@v4
+
+      # Шаг 2: Установка Node.js с кэшированием зависимостей
+      - name: Установка Node.js и кэширование node_modules
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # Шаг 3: Установка зависимостей проекта
+      - name: Установка зависимостей (npm install)
+        run: npm ci
+
+      # Шаг 4: Запуск линтера
+      - name: Запуск линтера
+        run: npm run lint
+
+      # Шаг 5: Проверка типов TypeScript
+      - name: Проверка типов
+        run: npm run type-check
+
+      # Шаг 6: Установка зависимостей мок-сервера (нужны для E2E)
+      - name: Установка зависимостей server-mock
+        run: cd server-mock && npm ci
+
+      # Шаг 6: Заполнить БД тестовыми данными
+      - name: Наполнение server-mock данными
+        run: npm run seed
+
+      # Шаг 8: Установка браузеров Playwright для E2E
+      - name: Установка браузеров Playwright
+        run: npx playwright install --with-deps
+
+      # Шаг 9: Запуск тестов
+      - name: Запуск тестов
+        run: npm run test

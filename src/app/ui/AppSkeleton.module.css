@@ -1,0 +1,29 @@
+.layout {
+  min-height: 100vh;
+}
+
+.content {
+  padding: 24px;
+}
+
+.skeletonInput {
+  width: 120px;
+}
+
+.skeletonButton {
+  width: 60px;
+}
+
+.skeletonButtonWide {
+  width: 80px;
+}
+
+.header {
+  background: var(--app-header-bg);
+  color: var(--app-header-color);
+  border-bottom: 1px solid var(--app-header-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: normal;
+}

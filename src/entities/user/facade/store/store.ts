@@ -1,11 +1,12 @@
 import { create } from 'zustand';
-import type { User, UserState } from './types';
-import { ROLES } from './roles';
-import type { Role } from './roles';
+import type { User, UserState } from '../../model/types';
+import { ROLES } from '../../model/roles';
+import type { Role } from '../../model/roles';
 
 interface UserStore extends UserState {
   setUser: (user: User | null) => void;
   logout: () => void;
+  setInitComplete: () => void;
   /** Эффективные роли: у авторизованного — его роли, у гостя — только Guest (не перезатираем роли) */
   getEffectiveRoles: () => Role[];
   /** Проверяет, что у текущего пользователя есть хотя бы одна из требуемых ролей */
@@ -15,6 +16,7 @@ interface UserStore extends UserState {
 const initialState: UserState = {
   user: null,
   isAuthenticated: false,
+  isInit: false,
 };
 
 /** Роли неавторизованного пользователя — только просмотр ленты и инфо */
@@ -27,9 +29,15 @@ export const useUserStore = create<UserStore>((set, get) => ({
     set({
       user,
       isAuthenticated: Boolean(user),
+      isInit: true,
     }),
 
-  logout: () => set(initialState),
+  logout: () => {
+    localStorage.removeItem('access_token');
+    set({ ...initialState, isInit: true });
+  },
+
+  setInitComplete: () => set({ isInit: true }),
 
   getEffectiveRoles: () => {
     const { user } = get();
