@@ -2,11 +2,31 @@
   height: 100%;
 }
 
-.title {
-  color: inherit;
-  font-size: 18px;
+.brand {
+  flex-shrink: 0;
 }
 
-.navLink {
-  color: inherit;
+.logo {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
+
+.title {
+  color: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin: -4px -8px;
+  padding: 4px 8px;
+  user-select: none;
+  border-radius: 6px;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.title:hover {
+  opacity: 0.9;
+  background-color: var(--ant-color-fill-tertiary);
+}
+
