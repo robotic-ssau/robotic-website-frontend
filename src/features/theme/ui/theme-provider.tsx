@@ -1,57 +1,36 @@
 import type { ReactNode } from 'react';
-import { useMemo, useState, useCallback, useEffect } from 'react';
-import { ConfigProvider, theme as antdTheme } from 'antd';
+import { useMemo } from 'react';
+import { App as AntdApp, ConfigProvider, theme as antdTheme } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
-import {
-  getStoredTheme,
-  THEME_STORAGE_KEY,
-  THEME_DARK,
-  THEME_LIGHT,
-  type ThemeMode,
-} from '@/shared/lib/theme';
+import { useTheme as useNextTheme } from 'next-themes';
+import { DEFAULT_THEME, type ThemeMode, THEME_SYSTEM } from '@/shared/lib/theme';
 import { ThemeContext } from '../model/theme-context';
 
 interface ThemeProviderProps {
   children: ReactNode;
 }
 
-/**
- * Применяет сохранённую тему к document до гидрации React (совпадает с inline-скриптом в index.html).
- */
-function applyThemeToDocument(theme: ThemeMode) {
-  if (typeof document === 'undefined') return;
-  document.documentElement.setAttribute('data-theme', theme);
-  document.documentElement.style.colorScheme = theme === THEME_DARK ? 'dark' : 'light';
-  document.body.style.backgroundColor = theme === THEME_DARK ? '#141414' : '#ffffff';
-}
-
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<ThemeMode>(getStoredTheme);
+  const { theme, resolvedTheme, setTheme } = useNextTheme();
 
-  const setTheme = useCallback((next: ThemeMode) => {
-    setThemeState(next);
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, next);
-      applyThemeToDocument(next);
-    } catch {
-      // ignore
-    }
-  }, []);
+  const mode: ThemeMode =
+    theme === 'light' || theme === 'dark' || theme === THEME_SYSTEM
+      ? (theme as ThemeMode)
+      : DEFAULT_THEME;
 
-  const toggleTheme = useCallback(() => {
-    setTheme(theme === THEME_DARK ? THEME_LIGHT : THEME_DARK);
-  }, [theme, setTheme]);
-
-  useEffect(() => {
-    applyThemeToDocument(theme);
-  }, [theme]);
+  const raw = mode === THEME_SYSTEM ? resolvedTheme : mode;
+  const effective: 'light' | 'dark' = raw === 'dark' ? 'dark' : 'light';
 
   const contextValue = useMemo(
-    () => ({ theme, setTheme, toggleTheme }),
-    [theme, setTheme, toggleTheme],
+    () => ({
+      theme: mode,
+      resolvedTheme: effective,
+      setTheme: (next: ThemeMode) => setTheme(next),
+    }),
+    [mode, effective, setTheme],
   );
 
-  const algorithm = theme === THEME_DARK ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm;
+  const algorithm = effective === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm;
 
   return (
     <ThemeContext.Provider value={contextValue}>
@@ -61,7 +40,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
           algorithm,
         }}
       >
-        {children}
+        <AntdApp>{children}</AntdApp>
       </ConfigProvider>
     </ThemeContext.Provider>
   );
