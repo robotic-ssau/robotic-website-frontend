@@ -1,11 +1,15 @@
 import type { ReactNode } from 'react';
+
 import { QueryProvider } from './query-provider';
-import { ThemeProvider } from '@/features/theme';
+import { ThemeProvider } from './theme';
+import { AntdConfigProvider } from '@/app/providers/antd-config';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
-      <QueryProvider>{children}</QueryProvider>
+      <AntdConfigProvider>
+        <QueryProvider>{children}</QueryProvider>
+      </AntdConfigProvider>
     </ThemeProvider>
   );
 }

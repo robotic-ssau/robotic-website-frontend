@@ -5,6 +5,8 @@ export type ApiClientConfig = {
   timeout?: number;
   getAccessToken?: () => string | null;
 };
+export const UNAUTHORIZED_EVENT_TYPE = 'auth:unauthorized';
+export type UnauthorizedCustomEventType = { pathname: string };
 
 /**
  * Фабрика Axios-инстансов для разных микросервисов.
@@ -38,7 +40,7 @@ export function createApiClient(config: ApiClientConfig): AxiosInstance {
         }
 
         const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
-        const event = new CustomEvent('auth:unauthorized', {
+        const event = new CustomEvent<UnauthorizedCustomEventType>(UNAUTHORIZED_EVENT_TYPE, {
           detail: { pathname },
         });
         if (typeof window !== 'undefined') {

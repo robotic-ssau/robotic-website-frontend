@@ -81,6 +81,18 @@ router.post('/logout', (req: Request, res: Response<LogoutResponseDTO>) => {
   return res.json({ message: 'Logged out successfully' });
 });
 
+/** Извлекает user_id из мокового токена формата fake-jwt-${user.id}-${timestamp} */
+function parseUserIdFromToken(token: string): string | null {
+  const prefix = 'fake-jwt-';
+  if (!token.startsWith(prefix)) return null;
+  const rest = token.slice(prefix.length);
+  const parts = rest.split('-');
+  if (parts.length < 2) return null;
+  // Последняя часть — timestamp, остальное — UUID пользователя
+  parts.pop();
+  return parts.join('-') || null;
+}
+
 // GET /api/auth/me (получить текущего пользователя)
 router.get('/me', async (req: Request, res: Response<GetCurrentUserResponseDTO | ApiErrorDTO>) => {
   const authHeader = req.headers.authorization;
@@ -91,17 +103,23 @@ router.get('/me', async (req: Request, res: Response<GetCurrentUserResponseDTO |
     });
   }
 
-  // Здесь можно извлечь user_id из токена, но для простоты возвращаем моковые данные
-  const users = await getAllByField('users', 'active', true);
-
-  if (users.length === 0) {
-    return res.status(404).json({
-      error: 'Not Found',
-      message: 'No active users found',
+  const token = authHeader.slice(7); // 'Bearer '.length
+  const userId = parseUserIdFromToken(token);
+  if (!userId) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'Invalid token format',
     });
   }
 
-  const user = users[0];
+  const user = await getById('users', userId);
+  if (!user || !user.active) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+      message: 'User not found or inactive',
+    });
+  }
+
   const profile = await getByField('profiles', 'user_id', user.id);
   const userRoles = await getAllByField('user_roles', 'user_id', user.id);
   const roles = await Promise.all(userRoles.map((ur) => getById('roles', ur.role_id)));

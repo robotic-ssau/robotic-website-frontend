@@ -1,1 +1,1 @@
-export { AppHeader } from './ui/app-header';
+export { AppHeader, type AppHeaderProps, type AppHeaderVariant } from './ui/app-header';

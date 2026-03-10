@@ -1,0 +1,14 @@
+.layout {
+  min-height: 100vh;
+}
+
+.header {
+  background: var(--app-header-bg);
+  color: var(--app-header-color);
+  border-bottom: 1px solid var(--app-header-border);
+}
+
+.content {
+  display: flex;
+  padding: 50px;
+}

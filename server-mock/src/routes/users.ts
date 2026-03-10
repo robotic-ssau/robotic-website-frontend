@@ -16,20 +16,26 @@ import type {
   RoleDTO,
 } from '../types.js';
 import { authMiddleware } from '../middleware/auth.js';
+import { parsePageParams, paginate } from '../utils/pagination.js';
 
 const router = Router();
 
 // Все роуты пользователей требуют авторизации
 router.use(authMiddleware);
 
-// GET /api/users - получить список всех пользователей
+// GET /api/users - получить список пользователей с пагинацией
 router.get('/', async (req: Request, res: Response<GetUsersResponseDTO | ApiErrorDTO>) => {
   try {
-    const users = await getAll('users');
+    const { page, pageSize } = parsePageParams(
+      req.query.page as string | undefined,
+      req.query.pageSize as string | undefined,
+    );
 
-    // Получаем профили и роли для каждого пользователя
+    const allUsers = await getAll('users');
+    const { data: usersPage, meta } = paginate(allUsers, page, pageSize);
+
     const usersWithProfiles: UserWithProfileDTO[] = await Promise.all(
-      users.map(async (user) => {
+      usersPage.map(async (user) => {
         const profile = await getByField('profiles', 'user_id', user.id);
         const userRoles = await getAllByField('user_roles', 'user_id', user.id);
         const roles = await Promise.all(userRoles.map((ur) => getById('roles', ur.role_id)));
@@ -42,7 +48,7 @@ router.get('/', async (req: Request, res: Response<GetUsersResponseDTO | ApiErro
       }),
     );
 
-    return res.json({ users: usersWithProfiles });
+    return res.json({ data: usersWithProfiles, meta });
   } catch (error) {
     console.error('Get users error:', error);
     return res.status(500).json({

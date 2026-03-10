@@ -1,2 +1,2 @@
-export { UserDropdown } from './ui/user-dropdown';
-export { useLogoutMutation } from './model/use-logout-mutation';
+export * from './ui';
+export { useLogoutMutation } from './facade/use-logout-mutation';

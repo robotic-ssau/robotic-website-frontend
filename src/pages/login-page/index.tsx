@@ -1,37 +1,16 @@
-import { Navigate, useLocation } from 'react-router-dom';
-import { Card, Layout, Typography } from 'antd';
-import { useUserStore } from '@/entities/user';
-import { LoginForm } from '@/features/auth-by-username';
-import { ThemeToggle } from '@/features/theme';
-import styles from './LoginPage.module.css';
+import { lazy } from 'react';
 
-const { Content } = Layout;
-const { Title } = Typography;
+import type { AppRouteMeta } from '@/shared/routing/types';
+import { type Role } from '@/entities/user';
+import { DEFAULT_AUTH_ROUTES_CONFIG } from '@/shared/routing';
 
-export function LoginPage() {
-  const isAuthenticated = useUserStore((s) => s.isAuthenticated);
-  const location = useLocation();
-  const from = (location.state as { from?: { pathname?: string } })?.from?.pathname;
+const LoginPage = lazy(() => import('./login-page'));
 
-  if (isAuthenticated) {
-    return <Navigate to={from ?? '/'} replace />;
-  }
-
-  return (
-    <Layout className={styles.layout}>
-      <Content className={styles.content}>
-        <div className={styles.themeToggleWrap}>
-          <ThemeToggle />
-        </div>
-        <Card className={styles.card}>
-          <Title level={2} className={styles.title}>
-            Вход
-          </Title>
-          <LoginForm />
-        </Card>
-      </Content>
-    </Layout>
-  );
-}
-
-export default LoginPage;
+export const loginRouteMeta: AppRouteMeta<Role> = {
+  path: DEFAULT_AUTH_ROUTES_CONFIG.loginPath,
+  key: 'login',
+  title: 'Вход',
+  requiredRoles: undefined,
+  showInMainNav: false,
+  element: <LoginPage />,
+};

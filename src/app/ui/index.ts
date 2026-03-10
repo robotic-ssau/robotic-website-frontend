@@ -1,1 +1,2 @@
-export { AppSkeleton } from './app-skeleton';
+export { AppSkeleton } from './skeleton';
+export { AuthLayout, MainLayout } from './layouts';
