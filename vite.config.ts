@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
 
+const PROXY_PATH = '/api';
+
 export default defineConfig({
   plugins: [react(), svgr()],
   resolve: {
@@ -13,10 +15,13 @@ export default defineConfig({
       '@shared-types': path.resolve(__dirname, 'shared/types'),
     },
   },
+  define: {
+    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL ?? PROXY_PATH),
+  },
   server: {
     proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
+      [PROXY_PATH]: {
+        target: process.env.VITE_API_PROXY_TARGET ?? 'http://localhost:3001',
         changeOrigin: true,
       },
     },
