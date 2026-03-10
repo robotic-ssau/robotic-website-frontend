@@ -1,25 +1,25 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Flex, Typography, Button, Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import Logo from '@assets/logo.svg?react';
 import { ThemeToggle } from '@/features/theme';
 import { UserDropdown } from '@/features/user-dropdown';
-import { defaultAuthRoutesConfig } from '@/shared/routing/auth-routes';
+import { DEFAULT_AUTH_ROUTES_CONFIG } from '@/shared/routing/auth-routes';
 import { useHeaderNav } from '../facade/hooks/use-header-nav';
 import type { AppHeaderProps } from './app-header.types';
 import styles from './AppHeader.module.css';
 
-const { Text } = Typography;
+const { Title } = Typography;
 
-export function AppHeaderDesktop({
-  variant = 'full',
-  routesMeta,
-  pathname,
-  authRoutes,
-}: AppHeaderProps) {
+const { loginPath } = DEFAULT_AUTH_ROUTES_CONFIG;
+
+export function AppHeaderDesktop({ variant = 'full', routesMeta, pathname }: AppHeaderProps) {
   const navigate = useNavigate();
   const showNav = variant === 'full';
-  const authConfig = authRoutes ?? defaultAuthRoutesConfig;
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const { navItems, activeKey, isAuthenticated } = useHeaderNav({
     routesMeta,
@@ -31,46 +31,42 @@ export function AppHeaderDesktop({
     if (target?.path) navigate(target.path);
   };
 
+  const menuItems = navItems.map(({ key, title, path }) => ({
+    key,
+    label: title,
+    onClick: () => navigate(path),
+  }));
+
   return (
     <Flex align="center" justify="space-between" className={styles.flex}>
-      {/* Логотип */}
-      <Flex
-        align="center"
-        className={styles.brand}
-        onClick={() => navigate('/')}
-        style={{ cursor: 'pointer' }}
-      >
+      <Flex align="center" className={styles.brand} onClick={() => navigate('/')}>
         <Logo className={styles.logo} width={48} height={48} />
-        <Text strong>Robotic</Text>
+        <Title level={1} className={styles.title}>
+          Robotic
+        </Title>
       </Flex>
 
-      <Flex
-        align="center"
-        gap="middle"
-        style={{ flex: 1, minWidth: 0, justifyContent: 'flex-end' }}
-      >
-        {showNav && navItems.length > 0 && (
-          <div style={{ flex: 1, minWidth: 0, marginLeft: '30%' }}>
+      <Flex align="center" gap="middle" justify="flex-end" flex={1}>
+        <div className={styles.navWrapper} style={{ minHeight: 46 }}>
+          {mounted ? (
             <Menu
               mode="horizontal"
               selectedKeys={activeKey ? [activeKey] : []}
-              items={navItems.map(({ key, title, path }) => ({
-                key,
-                label: title,
-                onClick: () => navigate(path),
-              }))}
+              items={menuItems}
               onClick={handleMenuClick}
-              style={{ borderBottom: 'none', justifyContent: 'flex-end' }}
+              className={styles.menu}
             />
-          </div>
-        )}
+          ) : (
+            <div className={styles.menuHidden} aria-hidden />
+          )}
+        </div>
 
         <ThemeToggle />
         {showNav &&
           (isAuthenticated ? (
             <UserDropdown />
           ) : (
-            <Button type="primary" size="small" onClick={() => navigate(authConfig.loginPath)}>
+            <Button type="primary" size="small" onClick={() => navigate(loginPath)}>
               Войти
             </Button>
           ))}

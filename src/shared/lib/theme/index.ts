@@ -4,6 +4,7 @@ export {
   THEME_DARK,
   THEME_SYSTEM,
   DEFAULT_THEME,
+  THEMES,
 } from './constants';
 export type { ThemeMode } from './constants';
-export { getStoredTheme } from './get-stored-theme';
+export { useTheme } from './use-theme.ts';

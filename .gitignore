@@ -9,4 +9,6 @@ dist
 test-results
 playwright-report
 tsconfig.tsbuildinfo
-public/.DS_Store
+
+
+**/.DS_Store

@@ -3,28 +3,14 @@ import { AppHeaderDesktop } from './app-header.desktop.tsx';
 import { AppHeaderMobile } from './app-header.mobile.tsx';
 import { useIsMobile } from '@/shared/ui/use-is-mobile';
 
-export function AppHeader({ variant, routesMeta, pathname, authRoutes }: AppHeaderProps) {
+export function AppHeader({ variant, routesMeta, pathname }: AppHeaderProps) {
   const isMobile = useIsMobile();
 
   if (isMobile) {
-    return (
-      <AppHeaderMobile
-        variant={variant}
-        routesMeta={routesMeta}
-        pathname={pathname}
-        authRoutes={authRoutes}
-      />
-    );
+    return <AppHeaderMobile variant={variant} routesMeta={routesMeta} pathname={pathname} />;
   }
 
-  return (
-    <AppHeaderDesktop
-      variant={variant}
-      routesMeta={routesMeta}
-      pathname={pathname}
-      authRoutes={authRoutes}
-    />
-  );
+  return <AppHeaderDesktop variant={variant} routesMeta={routesMeta} pathname={pathname} />;
 }
 
 export type { AppHeaderProps } from './app-header.types';

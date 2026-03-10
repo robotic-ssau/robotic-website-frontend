@@ -1,15 +1,9 @@
+import { lazy } from 'react';
+
 import type { AppRouteMeta } from '@/shared/routing/types';
 import { ROLES, type Role } from '@/entities/user';
 
-export function LabPage() {
-  return (
-    <div>
-      <h1>Лаборатория</h1>
-      <p>Доступно для ролей Council или Admin.</p>
-    </div>
-  );
-}
-export default LabPage;
+const LabPage = lazy(() => import('./lab-page'));
 
 export const labRouteMeta: AppRouteMeta<Role> = {
   path: '/lab',

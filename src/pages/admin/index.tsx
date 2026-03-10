@@ -1,15 +1,9 @@
+import { lazy } from 'react';
+
 import type { AppRouteMeta } from '@/shared/routing/types';
 import { ROLES, type Role } from '@/entities/user';
 
-export function AdminPage() {
-  return (
-    <div>
-      <h1>Админ-панель</h1>
-      <p>Доступно только для ролей Admin или Owner.</p>
-    </div>
-  );
-}
-export default AdminPage;
+const AdminPage = lazy(() => import('./admin-page'));
 
 export const adminRouteMeta: AppRouteMeta<Role> = {
   path: '/admin',

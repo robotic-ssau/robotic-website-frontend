@@ -3,7 +3,7 @@ import styles from './AppSkeleton.module.css';
 
 const { Header, Content } = Layout;
 
-export function AppSkeleton() {
+function AppSkeleton() {
   return (
     <Layout className={styles.layout}>
       <Header className={styles.header}>
@@ -22,3 +22,5 @@ export function AppSkeleton() {
     </Layout>
   );
 }
+
+export default AppSkeleton;

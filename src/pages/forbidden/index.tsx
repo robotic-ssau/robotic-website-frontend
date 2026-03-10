@@ -1,15 +1,9 @@
+import { lazy } from 'react';
+
 import type { AppRouteMeta } from '@/shared/routing/types';
 import type { Role } from '@/entities/user';
 
-export function ForbiddenPage() {
-  return (
-    <div>
-      <h1>403</h1>
-      <p>Нет прав доступа к этой странице.</p>
-    </div>
-  );
-}
-export default ForbiddenPage;
+const ForbiddenPage = lazy(() => import('./forbidden-page'));
 
 export const forbiddenRouteMeta: AppRouteMeta<Role> = {
   path: '/403',

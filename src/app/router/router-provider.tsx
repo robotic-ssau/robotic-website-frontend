@@ -1,17 +1,25 @@
 import { createBrowserRouter, RouterProvider, type RouteObject, redirect } from 'react-router-dom';
-import { AuthLayout, MainLayout } from '@/app/layouts';
-import { ProtectedRoute } from '@/features/access';
+
+import type { AppRouteConfig } from '@/shared/routing/types.ts';
+
 import type { Role } from '@/entities/user';
-import type { AppRouteConfig } from '@/shared/routing/types';
-import { authLayoutRoutesMeta, mainLayoutRoutesMeta } from '@/pages/routes';
-import { AuthInitWrapper } from './auth-init-wrapper';
+
+import { ProtectedRoute } from '@/features/access';
+
+import { authLayoutRoutesMeta, mainLayoutRoutesMeta } from '@/pages/routes.ts';
+
+import { AuthLayout, MainLayout } from '@/app/ui';
+
+import { AuthInitWrapper } from './auth-init-wrapper.tsx';
 
 import { postsRouteMeta } from '@/pages/posts-page';
+
+export const DEFAULT_PATH = postsRouteMeta.path;
 
 const mainChildren: AppRouteConfig<Role>[] = [
   {
     index: true,
-    loader: () => redirect(postsRouteMeta.path), // Дефолтный путь это страница с постами/новостями
+    loader: () => redirect(DEFAULT_PATH), // Дефолтный путь это страница с постами/новостями
     element: null,
   },
   ...mainLayoutRoutesMeta.map<AppRouteConfig<Role>>((meta) => ({

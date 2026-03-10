@@ -72,7 +72,7 @@ test.describe('Header and user dropdown', () => {
     await expect(page.getByRole('button', { name: /войти/i })).not.toBeVisible();
     const avatar = page.locator('.ant-avatar').first();
     await expect(avatar).toBeVisible();
-    await avatar.hover();
+    await avatar.click();
     await expect(page.getByText(/выйти из аккаунта/i)).toBeVisible();
     await expect(page).toHaveURL('/posts');
   });
@@ -85,7 +85,7 @@ test.describe('Header and user dropdown', () => {
     await expect(page).toHaveURL('/posts');
 
     const avatar = page.locator('.ant-avatar').first();
-    await avatar.hover();
+    await avatar.click();
     await page.getByText(/выйти из аккаунта/i).click();
 
     await expect(page).toHaveURL('/posts');

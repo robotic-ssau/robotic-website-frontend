@@ -1,16 +1,9 @@
+import { lazy } from 'react';
+
 import type { AppRouteMeta } from '@/shared/routing/types';
 import { type Role } from '@/entities/user';
 
-export function ContactsPage() {
-  return (
-    <div>
-      <h1>Контакты</h1>
-      <p>Здесь будут контактные данные и способы связи с клубом.</p>
-    </div>
-  );
-}
-
-export default ContactsPage;
+const ContactsPage = lazy(() => import('./contacts-page'));
 
 export const contactsRouteMeta: AppRouteMeta<Role> = {
   path: '/contacts',

@@ -3,7 +3,7 @@ export interface AuthRoutesConfig {
   profilePath: string;
 }
 
-export const defaultAuthRoutesConfig: AuthRoutesConfig = {
+export const DEFAULT_AUTH_ROUTES_CONFIG: AuthRoutesConfig = {
   loginPath: '/login',
   profilePath: '/profile',
 };

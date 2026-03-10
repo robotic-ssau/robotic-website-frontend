@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { Layout } from 'antd';
 import { AppHeader } from '@/widgets/header';
-import { mainLayoutRoutesMeta } from '@/pages/routes';
+import { mainLayoutRoutesMeta } from '@/pages/routes.ts';
 import styles from './MainLayout.module.css';
 
 const { Header, Content } = Layout;

@@ -1,9 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
-import type { MenuProps } from 'antd';
 import { Button, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import { MoonOutlined, SunOutlined, SyncOutlined } from '@ant-design/icons';
-import { useTheme } from '../model/use-theme';
-import { THEME_DARK, THEME_LIGHT, THEME_SYSTEM, type ThemeMode } from '@/shared/lib/theme';
+
+import {
+  THEME_DARK,
+  THEME_LIGHT,
+  THEME_SYSTEM,
+  useTheme,
+  type ThemeMode,
+} from '@/shared/lib/theme';
+
 import styles from './theme-toggle.module.css';
 
 /**
@@ -46,6 +53,7 @@ export function ThemeToggle() {
   );
 
   let IconComponent = SyncOutlined;
+
   let ariaLabel = 'Системная тема';
 
   if (mode === THEME_DARK) {
@@ -66,7 +74,7 @@ export function ThemeToggle() {
         items,
         selectedKeys: [mode],
       }}
-      trigger={['hover']}
+      trigger={['click']}
       placement="bottomRight"
     >
       <Button

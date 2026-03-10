@@ -3,7 +3,17 @@
 }
 
 .brand {
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 16px 4px 8px;
+  user-select: none;
+  border-radius: 6px;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
 }
 
 .logo {
@@ -15,18 +25,27 @@
 }
 
 .title {
-  color: inherit;
-  font-size: 1.5rem;
-  cursor: pointer;
-  margin: -4px -8px;
-  padding: 4px 8px;
-  user-select: none;
-  border-radius: 6px;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  font-size: 1.25rem !important;
 }
 
-.title:hover {
-  opacity: 0.9;
-  background-color: var(--ant-color-fill-tertiary);
+
+.navWrapper {
+  flex: 1;
+  width: 400px;
+  min-height: 46px;
 }
 
+.menu {
+  border-bottom: none;
+  justify-content: flex-end;
+  width: 100%;
+  line-height: 46px;
+  min-height: 46px;
+  transition: opacity 160ms ease;
+  opacity: 1;
+}
+
+.menuHidden {
+  opacity: 0;
+  pointer-events: none;
+}

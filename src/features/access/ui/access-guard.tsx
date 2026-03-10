@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useAccess } from '../model/use-access';
+import { useAccess } from '../facade/use-access';
 import { Role } from '@/entities/user';
 
 export interface AccessGuardProps {

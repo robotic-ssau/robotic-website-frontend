@@ -1,5 +1,5 @@
 import { Button, Form, Input, type FormProps } from 'antd';
-import { useLoginMutation } from '../model/use-login-mutation';
+import { useLoginMutation } from '../facade/use-login-mutation';
 import styles from './LoginForm.module.css';
 
 type FieldType = {

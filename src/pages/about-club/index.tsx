@@ -1,16 +1,9 @@
-import type { AppRouteMeta } from '@/shared/routing/types';
-import { type Role } from '@/entities/user';
+import { lazy } from 'react';
 
-export function AboutClubPage() {
-  return (
-    <div>
-      <h1>О клубе</h1>
-      <p>Информация о клубе, его миссии и активности.</p>
-    </div>
-  );
-}
+import { AppRouteMeta } from '@/shared/routing';
+import { Role } from '@/entities/user';
 
-export default AboutClubPage;
+const AboutClubPage = lazy(() => import('./about-club'));
 
 export const aboutClubRouteMeta: AppRouteMeta<Role> = {
   path: '/about',

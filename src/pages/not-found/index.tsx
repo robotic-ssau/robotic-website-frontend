@@ -1,15 +1,9 @@
+import { lazy } from 'react';
+
 import type { AppRouteMeta } from '@/shared/routing/types';
 import type { Role } from '@/entities/user';
 
-export function NotFoundPage() {
-  return (
-    <div>
-      <h1>404</h1>
-      <p>Страница не найдена.</p>
-    </div>
-  );
-}
-export default NotFoundPage;
+const NotFoundPage = lazy(() => import('./not-found-page'));
 
 export const notFoundRouteMeta: AppRouteMeta<Role> = {
   path: '*',

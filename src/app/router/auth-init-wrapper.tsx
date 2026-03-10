@@ -1,11 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { Outlet, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { App } from 'antd';
-import { useUserStore, useAuthInit } from '@/entities/user';
-import { AppSkeleton } from '@/app/ui';
+
 import { UNAUTHORIZED_EVENT_TYPE, UnauthorizedCustomEventType } from '@/shared/api';
-import { ALL_ROUTES_META } from '@/pages/routes.ts';
 import { matchRouteMeta } from '@/shared/routing';
+
+import { useUserStore, useAuthInit } from '@/entities/user';
+
+import { ALL_ROUTES_META } from '@/pages/routes.ts';
+
+import { AppSkeleton } from '@/app/ui';
 
 /**
  * Пути, требующие авторизации (защищённые маршруты).

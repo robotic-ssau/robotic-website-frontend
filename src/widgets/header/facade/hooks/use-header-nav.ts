@@ -1,11 +1,15 @@
 import { useMemo } from 'react';
 import { useUserStore } from '@/entities/user';
+import { useAccess } from '@/features/access';
+
 import type { UseHeaderNavParams, UseHeaderNavResult } from '../types';
+import { matchRouteMeta } from '@/shared/routing';
 
 export function useHeaderNav({ routesMeta, pathname }: UseHeaderNavParams): UseHeaderNavResult {
   const isAuthenticated = useUserStore((s) => s.isAuthenticated);
   const user = useUserStore((s) => s.user);
-  const effectiveRoles = useUserStore((s) => s.getEffectiveRoles());
+
+  const checkAccess = useAccess();
 
   const navItems = useMemo(() => {
     if (!routesMeta) return [];
@@ -15,7 +19,7 @@ export function useHeaderNav({ routesMeta, pathname }: UseHeaderNavParams): UseH
         if (!meta.showInMainNav) return false;
 
         if (meta.requiredRoles && meta.requiredRoles.length > 0) {
-          return meta.requiredRoles.some((role) => effectiveRoles.includes(role));
+          return checkAccess(meta.requiredRoles);
         }
 
         return true;
@@ -26,29 +30,16 @@ export function useHeaderNav({ routesMeta, pathname }: UseHeaderNavParams): UseH
         path: meta.path,
         meta,
       }));
-  }, [routesMeta, effectiveRoles]);
+  }, [routesMeta, checkAccess]);
 
   const activeKey = useMemo(() => {
-    if (!pathname || navItems.length === 0) return '';
+    if (!pathname || !routesMeta || routesMeta.length === 0) return '';
 
-    const matched = navItems.find(({ meta }) => {
-      if (meta.isActive) {
-        return meta.isActive(pathname);
-      }
+    const matched = matchRouteMeta(pathname, routesMeta);
 
-      if (!meta.path) {
-        return false;
-      }
-
-      if (meta.path === '/') {
-        return pathname === '/';
-      }
-
-      return pathname === meta.path || pathname.startsWith(`${meta.path}/`);
-    });
-
-    return matched?.key ?? '';
-  }, [pathname, navItems]);
+    if (!matched) return '';
+    return matched.key;
+  }, [pathname, routesMeta]);
 
   return {
     navItems,

@@ -21,11 +21,17 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('antd') || id.includes('ant-design/icons')) return 'antd-vendor';
+
+            return 'vendor';
+          }
+        },
       },
     },
   },

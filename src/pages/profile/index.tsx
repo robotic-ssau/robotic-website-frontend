@@ -1,21 +1,16 @@
+import { lazy } from 'react';
+
 import type { AppRouteMeta } from '@/shared/routing/types';
 import { ROLES, type Role } from '@/entities/user';
+import { DEFAULT_AUTH_ROUTES_CONFIG } from '@/shared/routing';
 
-export function ProfilePage() {
-  return (
-    <div>
-      <h1>Профиль</h1>
-      <p>Страница профиля доступна только пользователям с ролью User и выше.</p>
-    </div>
-  );
-}
-export default ProfilePage;
+const ProfilePage = lazy(() => import('./profile-page'));
 
 export const profileRouteMeta: AppRouteMeta<Role> = {
-  path: '/profile',
+  path: DEFAULT_AUTH_ROUTES_CONFIG.profilePath,
   key: 'profile',
   title: 'Профиль',
   requiredRoles: [ROLES.USER, ROLES.COUNCIL, ROLES.ADMIN, ROLES.OWNER, ROLES.SMM],
-  showInMainNav: true,
+  showInMainNav: false,
   element: <ProfilePage />,
 };
